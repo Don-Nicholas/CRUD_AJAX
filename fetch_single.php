@@ -3,8 +3,6 @@
     include('connection.php');
     include('function.php');
 
-    echo isset($_POST['id']);
-
     if(isset($_POST['id']))
     {
         $output = array();

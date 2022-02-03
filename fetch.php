@@ -10,7 +10,10 @@
     if(isset($_POST['search']['value']))
     {
         $query .= 'WHERE title LIKE "%'.$_POST['search']['value'].'%" ';
+        $query .= 'OR company_name LIKE "%'.$_POST['search']['value'].'%" ';
+        $query .= 'OR company_location LIKE "%'.$_POST['search']['value'].'%" ';
         $query .= 'OR salary LIKE "%'.$_POST['search']['value'].'%" ';
+        $query .= 'OR job_types LIKE "%'.$_POST['search']['value'].'%" ';
     }
 
     if(isset($_POST['order']))
@@ -22,10 +25,11 @@
         $query .= 'ORDER BY id ASC ';
     }
 
-    // if($_POST['length'] != -1)
-    // {
-    //     $query .= 'LIMIT'.$_POST['start'].', '.$_POST['length'];
-    // }
+    if($_POST['length'] != -1)
+    {
+        $query .= 'LIMIT '.$_POST['start'].', '.$_POST['length'];
+    }
+
 
 
 
@@ -46,7 +50,7 @@
         $sub_array[] = $row['salary'];
         $sub_array[] = $row['job_types'];
         $sub_array[] = '<button type="button" name="update" id="'.$row['id'].'" class="btn btn-success btn-sm update" >Update</button>';
-        $sub_array[] = '<button type="button" name="delete" id="'.$row['id'].'" class="btn btn-danger btn-sm update" >Delete</button>';
+        $sub_array[] = '<button type="button" name="delete" id="'.$row['id'].'" class="btn btn-danger btn-sm delete" >Delete</button>';
 
         $data[] = $sub_array;
     }

@@ -19,18 +19,12 @@
         <div class="col-sm-12">
             <div class="container">
                 <div class="row my-5">
-                    <div class="col-sm-6">
+                    <div class="col-sm-12 text-center">
                         <h1>Jobs CRUD Operation</h1>
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="input-group mb-3">
-                            <input type="text" class="form-control" placeholder="Search from table" aria-label="Recipient's username" aria-describedby="button-addon2">
-                            <button class="btn btn-outline-secondary" type="button" id="button-addon2">Search</button>
-                        </div>
                     </div>
                 </div>
                 <button class="btn btn-primary font-bold mb-3" id="add_button" data-bs-toggle="modal" data-bs-target="#insertJobModal">Add Job</button>
-                <table class="table table-hover" id="jobstable">
+                <table class="table table-hover mb-5" id="jobstable">
                     <thead>
                         <tr>
                             <th>ID</th>
@@ -110,6 +104,8 @@
 
             var dataTable = $('#jobstable').DataTable({
                 "paging":true,
+                "pageLength":5,
+                "lengthChange": false,
                 "processing":true,
                 "serverSide":true,
                 "order":[],
@@ -150,8 +146,6 @@
                         }
                         
                     });
-                    // alert(new FormData(this));
-                    // alert(title+" "+company_name+" "+company_location+" "+salary+" "+jobTypes);
                 }
                 else {
                     alert("Title, Company Name, Company Location, Salary and Job Types are Required!");
@@ -159,22 +153,17 @@
             });
 
 
-        });
-
-        
-
-        $(document).on('click', '.update', function() {
-            var id = $(this).attr("id");
+            $(document).on('click', '.update', function() {
+            var job_id = $(this).attr("id");
             $.ajax({
                 url:"fetch_single.php",
                 method:"POST",
-                data: {job_id: id},
+                data: {id: job_id},
                 dataType: "json",
-                processData: false,
                 success: function(data)
                 {
                     $("#insertJobModal").modal('show'),
-                    $("#id").val(data.id),
+                    $("#job_id").val(data.id),
                     $("#title").val(data.title),
                     $("#company_name").val(data.company_name),
                     $("#company_location").val(data.company_location),
@@ -184,6 +173,29 @@
                     $("#operation").val("Edit")
                 }
             });
+        });
+
+        $(document).on('click', '.delete', function() {
+            var job_id = $(this).attr("id");
+        
+            if(confirm("Are you sure you want to delete this job?"))
+            {
+                $.ajax({
+                    url: "delete.php",
+                    method: "POST",
+                    data: {job_id: job_id},
+                    success: function(data) {
+                        dataTable.ajax.reload();
+                    }
+                });
+            }
+            else 
+            {
+                return false;
+            }
+        });
+
+
         });
 
     </script>

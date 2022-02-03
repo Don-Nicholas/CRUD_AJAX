@@ -11,20 +11,12 @@
             $statement = $connection->prepare($query);
             $result = $statement->execute();
 
-            echo $query;
         }
+
         if($_POST['operation'] == 'Edit')
         {
-            $statement = $connection->prepare("UPDATE tbl_jobs SET id=:id, title = :title, company_name = :company_name, company_location = :company_location, salary = :salary, job_types = :job_types WHERE id = :id ");
-            $result = $statement->execute(
-                array(
-                    ':title' => $_POST['title'], 
-                    ':company_name' => $_POST['company_name'], 
-                    ':company_location' => $_POST['company_location'], 
-                    ':salary' => $_POST['salary'], 
-                    ':job_types' => $_POST['job_types'],
-                    ':id' => $_POST['id']
-                )
-            );
+            $query = "UPDATE tbl_jobs SET id=".$_POST['job_id'].", title = '".$_POST['title']."', company_name = '".$_POST['company_name']."', company_location = '".$_POST['company_location']."', salary = '".$_POST['salary']."', job_types = '".$_POST['job_types']."' WHERE id = ".$_POST['job_id']." ";
+            $statement = $connection->prepare($query);
+            $result = $statement->execute();
         }
     }
